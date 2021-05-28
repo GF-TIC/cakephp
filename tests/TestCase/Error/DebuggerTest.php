@@ -31,6 +31,7 @@ use stdClass;
 use TestApp\Error\TestDebugger;
 use TestApp\Error\Thing\DebuggableThing;
 use TestApp\Error\Thing\SecurityThing;
+use TestApp\Utility\ThrowsDebugInfo;
 
 /**
  * DebuggerTest class
@@ -501,6 +502,18 @@ object(SplFixedArray) id:0 {
   1 => 'blue'
 }
 TEXT;
+        $this->assertTextEquals($expected, $result);
+    }
+
+    /**
+     * Test exportVar with an exception during __debugInfo()
+     *
+     * @return void
+     */
+    public function testExportVarInvalidDebugInfo()
+    {
+        $result = Debugger::exportVar(new ThrowsDebugInfo());
+        $expected = '(unable to export object: from __debugInfo)';
         $this->assertTextEquals($expected, $result);
     }
 
